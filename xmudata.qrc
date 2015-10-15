@@ -1,0 +1,6 @@
+<RCC>
+    <qresource>
+        <file alias="nist-atom-weight">nist-atom-weight.txt</file>
+    </qresource>
+</RCC>
+ 
