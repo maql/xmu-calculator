@@ -1,3 +1,6 @@
 *.o
 Makefile
 xmu-calculator
+
+moc_*.cpp
+qrc_*.cpp
