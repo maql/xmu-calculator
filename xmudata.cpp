@@ -64,20 +64,34 @@ int XmuData::getDefaultImass(const QString &symbol) const
 bool XmuData::parseLine(const QString &line, QString &symbol,
                         int &imass, double &mass, double &abundance)
 {
-    QRegExp symbolRegExp("[A-Z][a-z]{0,2}");
-    QRegExp doubleRegExp("[0-9]*\\.[0-9]+");
-    QRegExp intRegExp("[0-9]+");
+    QRegularExpression symbolRegExp("[A-Z][a-z]{0,2}");
+    QRegularExpression doubleRegExp("[0-9]*\\.[0-9]+");
+    QRegularExpression intRegExp("[0-9]+");
+    QRegularExpressionMatch match;
 
-    if (line.startsWith('-')) return false;
-    if (line.indexOf(symbolRegExp, 4) == 4) symbol = symbolRegExp.cap();
-    if (line.indexOf(intRegExp, 8) == 8) imass = intRegExp.cap().toInt();
-    else return false;
-    if (line.indexOf(doubleRegExp, 13) == 13)
-        mass = doubleRegExp.cap().toDouble();
-    else return false;
-    if (line.indexOf(doubleRegExp, 32) <= 33)
-        abundance = doubleRegExp.cap().toDouble();
-    else abundance = 0.0;
+    if (line.startsWith('-')) {
+        return false;
+    }
+    if (line.indexOf(symbolRegExp, 4, &match) == 4) {
+        symbol = match.captured(0);
+    }
+    if (line.indexOf(intRegExp, 8, &match) == 8) {
+        imass = match.captured(0).toInt();
+    } else {
+        return false;
+    }
+    if (line.indexOf(doubleRegExp, 13, &match) == 13) {
+        mass = match.captured(0).toDouble();
+    } else {
+        return false;
+    }
+
+    auto posAbundance = line.indexOf(doubleRegExp, 32, &match);
+    if (posAbundance == 32 || posAbundance == 33) {
+        abundance = match.captured(0).toDouble();
+    } else {
+        abundance = 0.0;
+    }
     return true;
 }
 
@@ -89,12 +103,12 @@ void XmuData::readFromTextFile(const QString &fileName)
     {
         QTextStream in(&data);
         QStringList lines = in.readAll().split('\n');
-        
+
         QStringList::const_iterator i;
         QString symbol;
         int imass;
         double mass, abundance;
-        
+
         for (i = lines.constBegin(); i != lines.constEnd(); ++i)
         {
             if (parseLine(*i, symbol, imass, mass, abundance))

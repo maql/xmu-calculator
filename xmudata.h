@@ -3,7 +3,7 @@
 
 #include <QMap>
 #include <QString>
-#include <QRegExp>
+#include <QRegularExpression>
 
 
 class Isotope
@@ -11,7 +11,7 @@ class Isotope
 public:
     Isotope(int im, const QString &sym);
     bool operator<(const Isotope &other) const;
-    
+
 private:
     int imass;
     QString symbol;
@@ -24,7 +24,7 @@ public:
     IsotopeAbundance();
     void update(int im, const double abund);
     int imass;
-    
+
 private:
     double abundance;
 };
@@ -38,7 +38,7 @@ public:
     void readFromTextFile(const QString &fileName);
     double getXmu(int imass, const QString &symbol) const;
     int getDefaultImass(const QString &symbol) const;
-    
+
 private:
     bool parseLine(const QString &line, QString &symbol,
                    int &imass, double &mass, double &abundance);
