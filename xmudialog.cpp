@@ -110,8 +110,9 @@ double XmuDialog::calculateMass(const QString &formula, QString &disp)
 {
     disp = "";
     if (formula.isEmpty()) return 0.0;
-    QRegularExpression isotopeRegExp("(\\[[1-9][0-9]{0,2}\\])?"
-                          "([A-Z][a-z]{0,2})([0-9]+)?");
+    static QRegularExpression isotopeRegExp(
+        "(\\[[1-9][0-9]{0,2}\\])?([A-Z][a-z]{0,2})([0-9]+)?"
+    );
     int pos = 0, imass, count;
     double mass = 0.0, massIsotope;
     QString symbol, imassString;

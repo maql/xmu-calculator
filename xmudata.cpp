@@ -64,9 +64,9 @@ int XmuData::getDefaultImass(const QString &symbol) const
 bool XmuData::parseLine(const QString &line, QString &symbol,
                         int &imass, double &mass, double &abundance)
 {
-    QRegularExpression symbolRegExp("[A-Z][a-z]{0,2}");
-    QRegularExpression doubleRegExp("[0-9]*\\.[0-9]+");
-    QRegularExpression intRegExp("[0-9]+");
+    static QRegularExpression symbolRegExp("[A-Z][a-z]{0,2}");
+    static QRegularExpression doubleRegExp("[0-9]*\\.[0-9]+");
+    static QRegularExpression intRegExp("[0-9]+");
     QRegularExpressionMatch match;
 
     if (line.startsWith('-')) {
